@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 public class Controller {
     @Value("${helloMessage}")
     String message;
 
-    @GetMapping("v1/hello")
+    @GetMapping("/hello")
     public Response hello() {
         return new Response(message);
     }
