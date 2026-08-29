@@ -51,7 +51,7 @@ public class DataServer {
         return users.stream().filter(user -> user.email().equals(email) && user.password().equals(password)).findFirst();
     }
 
-    public Optional<User> replaceUser(UserReq userReq){
+    public Optional<User> replaceUser(User userReq){
         User existing = findByEmail(userReq.email());
         if (existing == null) {
             return Optional.empty();

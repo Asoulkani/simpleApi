@@ -34,8 +34,12 @@ public class CanteenService {
     }
 
     public UserResp updateUser(UserReq user) {
-        Optional<User> updatedUser = dataServer.replaceUser(user);
+        Optional<User> updatedUser = dataServer.replaceUser(userReqMapUser(user));
         return updatedUser.map(value -> new UserResp(true, new UserView(value.name(), value.email(), value.orders()))).orElseGet(() -> new UserResp(false, null));
+    }
+
+    public User userReqMapUser(UserReq userReq) {
+        return new User(userReq.name(), userReq.email(), "", userReq.orders());
     }
 
     public ArrayList<Dishes> getAllDishes() {
