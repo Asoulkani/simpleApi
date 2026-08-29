@@ -27,6 +27,7 @@ public class SimpleApiApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				log.info("Adding CORS mappings : " + allowedOrigins);
 				registry.addMapping("/api/**").allowedOrigins(allowedOrigins);
+				registry.addMapping("Canteen/api/**").allowedOrigins(allowedOrigins);
 			}
 		};
 	}

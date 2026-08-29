@@ -1,10 +1,12 @@
 package ma.aso.simpleapi.canteen;
 
+import ma.aso.simpleapi.canteen.data.Dishes;
 import ma.aso.simpleapi.canteen.data.User;
 import ma.aso.simpleapi.canteen.data.dto.AuthenticateReq;
 import ma.aso.simpleapi.canteen.data.dto.UserResp;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @RestController
@@ -26,5 +28,10 @@ public class CanteenController {
     @PostMapping("/updateUser")
     public UserResp updateUser(@RequestBody User user){
         return new UserResp( canteenService.updateUser(user), user);
+    }
+
+    @GetMapping("/dishes")
+    public ArrayList<Dishes> getDishes() {
+        return canteenService.getAllDishes();
     }
 }

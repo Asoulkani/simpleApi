@@ -1,15 +1,20 @@
 package ma.aso.simpleapi.canteen.data;
 
-import ma.aso.simpleapi.canteen.exceptions.NoDishException;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Optional;
 
 @Component
 public class DataServer {
-    public ArrayList<User> users = new ArrayList<>() ;
-    public ArrayList<Dishes> dishes = new ArrayList<>() ;
+    private ArrayList<User> users = new ArrayList<>() ;
+    private ArrayList<Dishes> dishes = new ArrayList<>() ;
+
+    @PostConstruct
+    public void init() {
+        loadData();
+    }
 
     public void loadData(){
         loadUsers();
@@ -37,4 +42,23 @@ public class DataServer {
         users.get(0).orders().add(new Order(dishes.get(0), 1));
     }
 
+    public User findByEmail(String email){
+        return users.stream().filter(user -> user.email().equals(email)).findFirst().orElse(null);
+    }
+
+    public Optional<User> findByEmailAndPassword(String email, String password){
+        return users.stream().filter(user -> user.email().equals(email) && user.password().equals(password)).findFirst();
+    }
+
+    public boolean replaceUser(User user){
+        if(users.stream().anyMatch(user1 -> user1.email().equals(user.email())))
+            return false;
+        users.replaceAll(user1 -> user1.email().equals(user.email()) ? user : user1);
+        // true means its actually gotten persisted in the db
+        return true;
+    }
+
+    public ArrayList<Dishes> allDishes() {
+        return dishes;
+    }
 }
