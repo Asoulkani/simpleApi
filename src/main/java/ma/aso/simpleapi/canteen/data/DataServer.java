@@ -1,6 +1,7 @@
 package ma.aso.simpleapi.canteen.data;
 
 import jakarta.annotation.PostConstruct;
+import ma.aso.simpleapi.canteen.data.dto.UserReq;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -50,12 +51,19 @@ public class DataServer {
         return users.stream().filter(user -> user.email().equals(email) && user.password().equals(password)).findFirst();
     }
 
-    public Optional<User> replaceUser(User user){
-        if(users.stream().noneMatch(user1 -> user1.email().equals(user.email())))
+    public Optional<User> replaceUser(UserReq userReq){
+        User existing = findByEmail(userReq.email());
+        if (existing == null) {
             return Optional.empty();
-        users.replaceAll(user1 -> user1.email().equals(user.email()) ? user : user1);
-        // true means its actually gotten persisted in the db
-        return Optional.of(user);
+        }
+        User updated = new User(
+                userReq.name(),
+                userReq.email(),
+                existing.password(),  // never take password from the request
+                userReq.orders()
+        );
+        users.replaceAll(user -> user.email().equals(userReq.email()) ? updated : user);
+        return Optional.of(updated);
     }
 
     public ArrayList<Dishes> allDishes() {

@@ -3,6 +3,7 @@ package ma.aso.simpleapi.canteen;
 import ma.aso.simpleapi.canteen.data.Dishes;
 import ma.aso.simpleapi.canteen.data.User;
 import ma.aso.simpleapi.canteen.data.dto.AuthenticateReq;
+import ma.aso.simpleapi.canteen.data.dto.UserReq;
 import ma.aso.simpleapi.canteen.data.dto.UserResp;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,14 +22,12 @@ public class CanteenController {
 
     @PostMapping("/login")
     public UserResp authenticateUser(@RequestBody AuthenticateReq authenticateReq){
-        Optional<User> user = canteenService.authenticateUser(authenticateReq.email(), authenticateReq.password());
-        return new UserResp(user.isPresent(), user.orElse(null));
+        return canteenService.authenticateUser(authenticateReq.email(), authenticateReq.password());
     }
 
     @PostMapping("/updateUser")
-    public UserResp updateUser(@RequestBody User user){
-        Optional<User> updatedUser = canteenService.updateUser(user);
-        return new UserResp( updatedUser.isPresent(), updatedUser.orElse(null));
+    public UserResp updateUser(@RequestBody UserReq user){
+        return canteenService.updateUser(user);
     }
 
     @GetMapping("/dishes")
