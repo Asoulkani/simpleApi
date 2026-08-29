@@ -50,12 +50,12 @@ public class DataServer {
         return users.stream().filter(user -> user.email().equals(email) && user.password().equals(password)).findFirst();
     }
 
-    public boolean replaceUser(User user){
-        if(users.stream().anyMatch(user1 -> user1.email().equals(user.email())))
-            return false;
+    public Optional<User> replaceUser(User user){
+        if(users.stream().noneMatch(user1 -> user1.email().equals(user.email())))
+            return Optional.empty();
         users.replaceAll(user1 -> user1.email().equals(user.email()) ? user : user1);
         // true means its actually gotten persisted in the db
-        return true;
+        return Optional.of(user);
     }
 
     public ArrayList<Dishes> allDishes() {

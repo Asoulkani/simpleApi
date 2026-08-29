@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("Canteen/api/v1")
+@RequestMapping("/api/v1/canteen")
 public class CanteenController {
 
     private final CanteenService canteenService;
@@ -21,13 +21,14 @@ public class CanteenController {
 
     @PostMapping("/login")
     public UserResp authenticateUser(@RequestBody AuthenticateReq authenticateReq){
-        Optional<User> user = canteenService.authenticateUser(authenticateReq.username(), authenticateReq.password());
+        Optional<User> user = canteenService.authenticateUser(authenticateReq.email(), authenticateReq.password());
         return new UserResp(user.isPresent(), user.orElse(null));
     }
 
     @PostMapping("/updateUser")
     public UserResp updateUser(@RequestBody User user){
-        return new UserResp( canteenService.updateUser(user), user);
+        Optional<User> updatedUser = canteenService.updateUser(user);
+        return new UserResp( updatedUser.isPresent(), updatedUser.orElse(null));
     }
 
     @GetMapping("/dishes")

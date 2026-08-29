@@ -25,7 +25,11 @@ public class CanteenService {
         return dataServer.findByEmailAndPassword(email, password);
     }
 
-    public boolean updateUser(User user) {
+    public Optional<User> getUser(String email) {
+        return Optional.ofNullable(dataServer.findByEmail(email));
+    }
+
+    public Optional<User> updateUser(User user) {
         return dataServer.replaceUser(user);
     }
 
