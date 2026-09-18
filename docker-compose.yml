@@ -1,0 +1,10 @@
+services:
+  api:
+    build: .
+    image: simple-api
+    ports:
+      - "8080:8080"
+    environment:
+      - allowedOrigins=http://localhost:4200
+      - helloMessage=Hello from the simplest api
+    restart: unless-stopped
